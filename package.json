@@ -1,6 +1,7 @@
 {
   "name": "angular-bootstrap-grid-tree",
   "version": "0.1.0",
+  "main": "src/tree-grid-directive.js",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
