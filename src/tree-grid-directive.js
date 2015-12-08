@@ -18,8 +18,9 @@
           "       ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\">\n" +
           "       <td><a ng-click=\"user_clicks_branch(row.branch)\"><i ng-class=\"row.tree_icon\"\n" +
           "              ng-click=\"row.branch.expanded = !row.branch.expanded\"\n" +
-          "              class=\"indented tree-icon\"></i>\n" +
-          "           </a><span class=\"indented tree-label\" ng-click=\"on_user_click(row.branch)\">\n" +
+          "              class=\"indented tree-icon\"></i></a>\n" +
+          "            <span ng-if=\"expandingProperty.cellTemplate\" class=\"indented tree-label\" ng-click=\"on_user_click(row.branch)\"  compile=\"expandingProperty.cellTemplate\">" +
+          "            <span ng-if=\"!expandingProperty.cellTemplate\" class=\"indented tree-label\" ng-click=\"on_user_click(row.branch)\">" +
           "             {{row.branch[expandingProperty.field] || row.branch[expandingProperty]}}</span>\n" +
           "       </td>\n" +
           "       <td ng-repeat=\"col in colDefinitions\">\n" +
@@ -216,7 +217,7 @@
                 return select_branch(branch);
               }
             };
-            
+
             /* sorting methods */
             scope.sortBy = function (col) {
             	if (col.sortDirection === "asc") {
@@ -273,13 +274,13 @@
             		var col = scope.colDefinitions[i];
             		if (col.field != sortedCol.field) {
             			col.sorted = false;
-                		col.sortDirection = "none";	
+                		col.sortDirection = "none";
             		}
             	}
             }
-              
+
             /* end of sorting methods */
-            
+
             get_parent = function (child) {
               var parent;
               parent = void 0;
@@ -680,7 +681,7 @@
 		return function(arr, filterString, expandingProperty, colDefinitions) {
 			var filtered = [];
 			//only apply filter for strings 3 characters long or more
-		   if (!filterString || filterString.length < 3) {		     
+		   if (!filterString || filterString.length < 3) {
 			   for (var i = 0; i < arr.length; i++) {
 		              var item = arr[i];
 		              if (item.visible) {
@@ -704,14 +705,14 @@
                 		if(ancestor.visible){
                 			filtered.push(ancestor);
                 		}
-                	} 
+                	}
                     ancestorStack = [];
                  }
               }
 		   }
            return filtered;
 		};
-		
+
 		function include(item, filterString, expandingProperty, colDefinitions){
 			var includeItem = false;
 			var filterApplied = false;
@@ -731,15 +732,15 @@
     			    if(checkItem(item, filterString, col)) {
     			    	includeItem = true;
     			    }
-    			}        		
+    			}
         	}
 			if (filterApplied) {
 			    return includeItem;
 			} else {
 				return true;
-			}			
+			}
 		}
-		
+
 		function checkItem(item, filterString, col) {
 			if (col.sortingType === "number") {
 				if (item.branch[col.field] != null
